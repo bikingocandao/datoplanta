@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 34 90 72" role="img" aria-label="DatoPlanta">
+  <!-- Logo oficial: fábrica con techo de sierra y tres barras de datos por dentro -->
+  <polygon points="14,106 14,56 44,34 44,56 74,34 74,56 104,34 104,106" fill="#FFB000"/>
+  <rect x="28" y="80" width="14" height="16" fill="#0E1A2B"/>
+  <rect x="52" y="70" width="14" height="26" fill="#0E1A2B"/>
+  <rect x="76" y="60" width="14" height="36" fill="#0E1A2B"/>
+</svg>
