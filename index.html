@@ -76,7 +76,7 @@
   /* Botones */
   .acciones { display: flex; flex-wrap: wrap; gap: 12px; }
   .boton {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
     min-height: 50px; padding: 12px 22px; border-radius: 10px;
     font: 600 17px/1.2 var(--cuerpo); text-decoration: none; border: 2px solid transparent;
     transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
@@ -97,13 +97,23 @@
   .menu a:hover { color: var(--tiza); border-bottom-color: var(--ambar); }
   .cabecera .boton { margin-left: 4px; }
   @media (max-width: 820px) { .menu { display: none; } .cabecera .boton { margin-left: auto; } }
+  /* Android de pantalla estrecha (360 px): todo más compacto para que el botón no se parta */
+  @media (max-width: 400px) {
+    .cabecera-fila { gap: 12px; }
+    .cabecera .marca { gap: 9px; }
+    .cabecera .marca svg { width: 38px; height: 30px; }
+    .cabecera .nombre { font-size: 26px; }
+    .cabecera .boton-chico { padding-inline: 13px; }
+  }
+  @media (max-width: 340px) { .cabecera .marca svg { display: none; } }
 
   /* Portada */
   .portada { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 56px; align-items: center; padding-block: 64px 80px; }
   .portada-texto { display: grid; gap: 26px; min-width: 0; }
-  .telefono { margin: 0; justify-self: center; width: min(310px, 78vw); display: grid; gap: 12px; }
-  .telefono video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 34px; border: 10px solid var(--borde); background: var(--noche-2); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
-  .telefono figcaption { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--apagado); text-align: center; }
+  /* El video de Instagram, recortado en cuadrado: sin el tercio de abajo que Reels deja vacío */
+  .video-demo { margin: 0; justify-self: center; width: min(440px, 100%); display: grid; gap: 12px; }
+  .video-demo video { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 18px; border: 1px solid var(--borde); background: var(--noche-2); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45); }
+  .video-demo figcaption { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--apagado); text-align: center; }
   @media (max-width: 860px) { .portada { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-block: 40px 64px; } }
 
   /* Franja del OEE */
@@ -133,13 +143,22 @@
   .tambien .rotulo { font-family: var(--mono); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--apagado); }
   @media (max-width: 860px) { .servicios { grid-template-columns: minmax(0, 1fr); } .hoja, .tambien { padding: 24px; } }
 
-  /* Así funciona: el carrusel */
-  .funciona { display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 56px; align-items: center; }
-  .carrusel { display: grid; gap: 14px; min-width: 0; }
-  .pista { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; border-radius: 16px; }
+  /* Así funciona: el carrusel de cuatro pasos, con capturas directas de la app */
+  .funciona {
+    display: grid; grid-template-columns: minmax(0, 440px) minmax(0, 1fr); column-gap: 56px;
+    grid-template-areas: "carrusel ." "carrusel titulo" "carrusel indice" "carrusel .";
+    grid-template-rows: 1fr auto auto 1fr;
+  }
+  .funciona-titulo { grid-area: titulo; margin-bottom: 0; }
+  .carrusel { grid-area: carrusel; display: grid; gap: 14px; min-width: 0; }
+  .pista { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
   .pista::-webkit-scrollbar { display: none; }
-  .lamina { margin: 0; scroll-snap-align: start; }
-  .lamina img { display: block; width: 100%; height: auto; aspect-ratio: 1080 / 1350; border-radius: 16px; border: 1px solid var(--borde); }
+  .lamina { margin: 0; scroll-snap-align: start; display: grid; gap: 14px; align-content: start; }
+  .lamina figcaption { display: grid; gap: 4px; }
+  .lamina .paso { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ambar); }
+  .lamina .paso .etiqueta { color: var(--apagado); margin: 0; vertical-align: 0; }
+  .lamina .titulo-paso { font-family: var(--display); font-size: 30px; font-weight: 600; line-height: 1.1; color: var(--tiza); }
+  .lamina img { display: block; width: 100%; height: auto; aspect-ratio: 780 / 976; border-radius: 16px; border: 1px solid var(--borde); background: var(--noche); }
   .controles { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .flecha { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--borde); background: transparent; color: var(--tiza); font: 600 20px/1 var(--cuerpo); cursor: pointer; }
   .flecha:hover:not(:disabled) { border-color: var(--ambar); color: var(--ambar); }
@@ -148,13 +167,18 @@
   .punto { width: 28px; height: 28px; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; padding: 0; }
   .punto::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--borde); transition: background-color 0.2s ease, transform 0.2s ease; }
   .punto[aria-current="true"]::after { background: var(--ambar); transform: scale(1.3); }
-  .indice { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 2px; counter-reset: lamina; }
+  .indice { grid-area: indice; list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 2px; }
   .indice button { width: 100%; text-align: left; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 12px 14px; border: 0; border-left: 3px solid transparent; border-radius: 0 10px 10px 0; background: transparent; color: var(--texto); font: 500 18px/1.35 var(--cuerpo); cursor: pointer; }
   .indice button span { font-family: var(--mono); font-size: 14px; color: var(--apagado); }
   .indice button:hover { color: var(--tiza); }
   .indice button[aria-current="true"] { border-left-color: var(--ambar); background: rgba(255, 176, 0, 0.08); color: var(--tiza); }
   .indice button[aria-current="true"] span { color: var(--ambar); }
-  @media (max-width: 860px) { .funciona { grid-template-columns: minmax(0, 1fr); gap: 32px; } .carrusel { max-width: 440px; width: 100%; justify-self: center; } }
+  @media (max-width: 860px) {
+    /* En el teléfono: el título, después las láminas y abajo la lista de pasos */
+    .funciona { grid-template-columns: minmax(0, 1fr); grid-template-areas: "titulo" "carrusel" "indice"; grid-template-rows: auto; row-gap: 32px; }
+    .carrusel { max-width: 440px; width: 100%; justify-self: center; }
+    .indice { margin-top: 0; }
+  }
 
   /* Cómo trabajo */
   .pasos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 2px solid var(--borde); }
@@ -229,8 +253,8 @@
       </div>
       <p class="nota">La muestra es gratis. Usted me manda una foto de su formulario y yo le enseño cómo quedaría.</p>
     </div>
-    <figure class="telefono">
-      <video id="video" src="media/asi-funciona.mp4" poster="media/portada.png" muted playsinline loop controls preload="metadata" aria-label="Video de demostración de DatoPlanta, con datos inventados"></video>
+    <figure class="video-demo">
+      <video id="video" src="media/asi-funciona-cuadrado.mp4" poster="media/portada-cuadrada.png" width="720" height="720" muted playsinline loop controls preload="metadata" aria-label="Video de demostración de DatoPlanta, con datos inventados"></video>
       <figcaption>Demostración con datos inventados</figcaption>
     </figure>
   </section>
@@ -272,36 +296,42 @@
 
   <section id="como-funciona" class="seccion banda" aria-labelledby="t-funciona">
     <div class="envoltura funciona">
-      <div class="carrusel" aria-roledescription="carrusel" aria-label="Así funciona DatoPlanta">
-        <div class="pista" id="pista" tabindex="0" aria-label="Láminas. Use las flechas del teclado para pasar.">
-          <figure class="lamina"><img src="img/carrusel-01.png" width="1080" height="1350" alt="Su formulario de papel, ahora digital. Celular con el OEE del día de ejemplo: 80.8%."></figure>
-          <figure class="lamina"><img src="img/carrusel-02.png" width="1080" height="1350" loading="lazy" alt="Paso 1 de 4: el operario llena una sola vez. Formulario de producción por hora en el celular."></figure>
-          <figure class="lamina"><img src="img/carrusel-03.png" width="1080" height="1350" loading="lazy" alt="Paso 2 de 4: firman en orden. Calidad ya firmó y le toca al supervisor."></figure>
-          <figure class="lamina"><img src="img/carrusel-04.png" width="1080" height="1350" loading="lazy" alt="Paso 3 de 4: los indicadores salen solos. OEE por línea y por turno."></figure>
-          <figure class="lamina"><img src="img/carrusel-05.png" width="1080" height="1350" loading="lazy" alt="Paso 4 de 4: el reporte sale cada mañana, en Excel y PDF."></figure>
-          <figure class="lamina"><img src="img/carrusel-06.png" width="1080" height="1350" loading="lazy" alt="Muestra gratis: envíeme una foto de su formulario en papel y le muestro cómo quedaría en digital."></figure>
+      <div class="encabezado-seccion funciona-titulo">
+        <p class="ceja">Así funciona</p>
+        <h2 id="t-funciona">De la línea al reporte</h2>
+        <p class="nota">Cuatro pasos, en capturas de la app con datos inventados. Deslice o toque un paso.</p>
+      </div>
+      <div class="carrusel" aria-roledescription="carrusel" aria-label="Así funciona DatoPlanta, en cuatro pasos">
+        <div class="pista" id="pista" tabindex="0" aria-label="Pasos. Use las flechas del teclado para pasar.">
+          <figure class="lamina">
+            <figcaption><p class="paso">Paso 1 de 4 <span class="etiqueta">Ejemplo</span></p><h3 class="titulo-paso">El operario llena una sola vez</h3><p>En la tablet o el celular, en la misma línea. El OEE se calcula mientras escribe.</p></figcaption>
+            <img src="img/paso-1-llenar.png" width="780" height="976" alt="Captura de la app en el celular: producción por hora. A las 7:00 p. m., 1130 piezas buenas y 14 malas; a las 8:00 p. m., 1158 buenas y 9 malas.">
+          </figure>
+          <figure class="lamina">
+            <figcaption><p class="paso">Paso 2 de 4 <span class="etiqueta">Ejemplo</span></p><h3 class="titulo-paso">Firman en orden</h3><p>Calidad, supervisor y gerente, en ese orden. Queda quién firmó y a qué hora.</p></figcaption>
+            <img src="img/paso-2-firmas.png" width="780" height="976" loading="lazy" alt="Captura de la app: registro de la línea L1, turno de noche del 2026-10-07, esperando firmas. Calidad firmó el 8 de octubre de 2026 a las 7:25 a. m.; le toca al supervisor y el gerente está pendiente.">
+          </figure>
+          <figure class="lamina">
+            <figcaption><p class="paso">Paso 3 de 4 <span class="etiqueta">Ejemplo</span></p><h3 class="titulo-paso">Los indicadores salen solos</h3><p>El OEE de todo el día, por línea y por turno, sin pasar nada a Excel.</p></figcaption>
+            <img src="img/paso-3-indicadores.png" width="780" height="976" loading="lazy" alt="Captura de la app: indicadores de todo el día. OEE 80.8%, disponibilidad 89.3%, rendimiento 92.2% y calidad 98.1%.">
+          </figure>
+          <figure class="lamina">
+            <figcaption><p class="paso">Paso 4 de 4 <span class="etiqueta">Ejemplo</span></p><h3 class="titulo-paso">El reporte sale cada mañana</h3><p>En Excel y PDF, sin que nadie lo arme.</p></figcaption>
+            <img src="img/paso-4-reportes.png" width="780" height="976" loading="lazy" alt="Captura de la app: reportes guardados del 2026-10-07 y del 2026-10-06, cada uno para bajar en PDF o en Excel.">
+          </figure>
         </div>
         <div class="controles">
-          <button class="flecha" id="anterior" type="button" aria-label="Lámina anterior">←</button>
+          <button class="flecha" id="anterior" type="button" aria-label="Paso anterior">←</button>
           <div class="puntos" id="puntos"></div>
-          <button class="flecha" id="siguiente" type="button" aria-label="Lámina siguiente">→</button>
+          <button class="flecha" id="siguiente" type="button" aria-label="Paso siguiente">→</button>
         </div>
       </div>
-      <div>
-        <div class="encabezado-seccion">
-          <p class="ceja">Así funciona</p>
-          <h2 id="t-funciona">De la línea al reporte</h2>
-          <p class="nota">Deslice las láminas o toque un paso. Son imágenes de demostración con datos inventados.</p>
-        </div>
-        <ol class="indice" id="indice">
-          <li><button type="button"><span>01</span>Su formulario de papel, ahora digital</button></li>
-          <li><button type="button"><span>02</span>El operario llena una sola vez</button></li>
-          <li><button type="button"><span>03</span>Firman en orden</button></li>
-          <li><button type="button"><span>04</span>Los indicadores salen solos</button></li>
-          <li><button type="button"><span>05</span>El reporte sale cada mañana</button></li>
-          <li><button type="button"><span>06</span>Muestra gratis</button></li>
-        </ol>
-      </div>
+      <ol class="indice" id="indice">
+        <li><button type="button" aria-controls="pista"><span>1</span>El operario llena una sola vez</button></li>
+        <li><button type="button" aria-controls="pista"><span>2</span>Firman en orden</button></li>
+        <li><button type="button" aria-controls="pista"><span>3</span>Los indicadores salen solos</button></li>
+        <li><button type="button" aria-controls="pista"><span>4</span>El reporte sale cada mañana</button></li>
+      </ol>
     </div>
   </section>
 
@@ -386,23 +416,30 @@
     const video = document.getElementById('video');
     if (video && !quieto) video.play().catch(() => {});
 
-    // Carrusel: deslizar, flechas, puntos e índice de pasos
+    // Carrusel: deslizar, flechas, puntos y la lista de pasos
     const pista = document.getElementById('pista');
     const laminas = [...pista.children];
     const puntos = document.getElementById('puntos');
     const indice = [...document.querySelectorAll('#indice button')];
     const anterior = document.getElementById('anterior');
     const siguiente = document.getElementById('siguiente');
+    const cabecera = document.querySelector('.cabecera');
 
     laminas.forEach((_, i) => {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'punto';
-      b.setAttribute('aria-label', `Ir a la lámina ${i + 1} de ${laminas.length}`);
+      b.setAttribute('aria-label', `Ir al paso ${i + 1} de ${laminas.length}`);
       b.addEventListener('click', () => ir(i));
       puntos.append(b);
     });
-    indice.forEach((b, i) => b.addEventListener('click', () => ir(i)));
+    // En el teléfono la lista queda debajo de las láminas: al tocar un paso, la vista sube hasta la lámina.
+    function mostrarLamina() {
+      const caja = pista.getBoundingClientRect();
+      if (caja.top >= cabecera.getBoundingClientRect().bottom && caja.bottom <= window.innerHeight) return; // ya se ve entera
+      pista.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'start' });
+    }
+    indice.forEach((b, i) => b.addEventListener('click', () => { ir(i); mostrarLamina(); }));
 
     const actual = () => Math.round(pista.scrollLeft / Math.max(1, pista.clientWidth));
     function ir(i) {
